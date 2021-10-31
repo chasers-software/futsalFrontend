@@ -1,18 +1,12 @@
-import React from 'react'
-import Header from './pages/Header'
-import Body from  './pages/Body'
-import Footer from './pages/Footer'
-import { CssBaseline } from '@mui/material'
+import React from "react";
+import ReactRouterSetup from "./pages/router";
 
 const App = () => {
-    return (
-        <>
-            <CssBaseline />
-            <Header/>
-            <Body />
-            <Footer />
-        </>
-    )
-}
+  return (
+    <>
+      <ReactRouterSetup />
+    </>
+  );
+};
 
 export default App;
