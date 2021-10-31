@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import './login.css'
 
 const Signup = () => {
   const [isOperator, setIsOperator] = useState(false);
@@ -23,7 +24,7 @@ const Signup = () => {
   };
 
   return (
-    <Grid>
+    <Grid className='signUpPage'>
       <Paper elevation={20} style={paperStyle}>
         <Grid align="center">
           <Avatar style={avatarStyle} />

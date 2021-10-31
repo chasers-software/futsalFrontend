@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-
+import './login.css'
 const Login = () => {
   //some styling
   const paperStyle = {
@@ -23,7 +23,7 @@ const Login = () => {
   const btnstyle = { margin: "8px 0", backgroundColor: "#1bbd7e" };
 
   return (
-    <Grid>
+    <Grid className='logInPage'>
       <Paper elevation={10} style={paperStyle}>
         <Grid align="center">
           <Avatar style={avatarStyle} />
