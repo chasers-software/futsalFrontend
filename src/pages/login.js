@@ -12,7 +12,17 @@ import {
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import './login.css'
+
+//actions
+import {useDispatch} from 'react-redux'
+
+
+
 const Login = () => {
+  //initialise dispatch
+  const dispatch=useDispatch()
+
+
   //some styling
   const paperStyle = {
     padding: 20,
@@ -22,6 +32,9 @@ const Login = () => {
   };
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const btnstyle = { margin: "8px 0", backgroundColor: "#1bbd7e" };
+
+
+  
 
   return (
     <Grid className='logInPage'>
