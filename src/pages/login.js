@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink } from 'react-router-dom'
 import {
   Grid,
   Paper,
@@ -45,11 +46,11 @@ const Login = () => {
           Log in
         </Button>
         <Typography>
-          <Link href="#">Forgot password ?</Link>
+          <Link component={RouterLink} to="#">Forgot password ?</Link>
         </Typography>
         <Typography>
           {" "}
-          Do you have an account ?<Link href="/signup">Sign Up</Link>
+          Do you have an account ?<Link component={RouterLink} to="/signup">Sign Up</Link>
         </Typography>
       </Paper>
     </Grid>
