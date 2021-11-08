@@ -1,4 +1,5 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Grid,
   Paper,
@@ -18,15 +19,14 @@ import './login.css'
 
 //actions
 import {useDispatch,useSelector} from 'react-redux'
-import {register,loadingScreen} from '../actions/user'
+import {registerUser} from '../actions/userActions'
 
 const Signup = () => {
   //initialize dispatch
   const dispatch=useDispatch()
-
-
   const [isOperator, setIsOperator] = useState(false);
-  const [user,setUser]=useState({
+  
+  const [user, setUser] = useState({
     name:'',
     email:'',
     phone:'',
@@ -50,11 +50,18 @@ const Signup = () => {
     role:'operator'
 
   })
-  const [acceptTerms,isAcceptTerms]=useState(false)
-  const userState=useSelector((state)=>state.user)
+  //for mui dialog
+  const [open, setOpen] = useState(true)
 
-  //for check
-  // userState.errormsg?console.log('error occurred : ',userState.errormsg):console.log('Current user : ',userState)
+  const handleOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const [acceptTerms,isAcceptTerms]=useState(false)
+  const {loading, userInfo, error} = useSelector((state) => state.userRegister)
 
   const paperStyle = { padding: "30px 20px", width: 300, margin: "20px auto" };
   const headerStyle = { margin: 0 };
@@ -72,31 +79,25 @@ const Signup = () => {
     isOperator?setFutsal({...futsal,[name]:value}):setUser({ ...user, [name]: value });
   };
 
-
   const handleSubmit=(e)=>
   {
     e.preventDefault();
+    handleOpen()
     
     if(acceptTerms)
     {
-      
-    
       if(!isOperator)
       {
         //for check
         console.log(user)
-        dispatch(loadingScreen(true))
-
-        dispatch(register(user))
-
-
+        dispatch(registerUser(user))
       }
       else
       {
         //for check
         console.log(futsal)
 
-        dispatch(register(futsal))
+        dispatch(registerUser(futsal))
 
       }
 
@@ -136,11 +137,17 @@ const Signup = () => {
           {isOperator && <TextField fullWidth label="Location" value={futsal.location} name='location' autoComplete='location' onChange={handleChange}/>}
           {isOperator && <TextField fullWidth label="Operator Name" value={futsal.operator_name} name='operator_name' autoComplete='operator_name' onChange={handleChange}/>}
           {!isOperator && <TextField fullWidth label="Name" value={user.name} name='name' autoComplete='name' onChange={handleChange}/>}
-          {isOperator?<TextField fullWidth label="Email" value={futsal.email} name='email' autoComplete='email' onChange={handleChange}/>:<TextField fullWidth label="Email" value={user.email} name='email' autoComplete='email' onChange={handleChange}/>}
-          {isOperator?<TextField fullWidth label="Phone Number" value={futsal.phone} name='phone' autoComplete='phone' onChange={handleChange}/>:<TextField fullWidth label="Phone Number" value={user.phone} name='phone' autoComplete='phone' onChange={handleChange}/>}
-          {isOperator?<TextField fullWidth label="Username" value={futsal.username} name='username' autoComplete='username' onChange={handleChange}/>:<TextField fullWidth label="Username" value={user.username} name='username' autoComplete='username' onChange={handleChange}/>}
-          {isOperator?<TextField type="password" fullWidth label="Password" value={futsal.password} name='password' autoComplete='password' onChange={handleChange}/>:<TextField type="password" fullWidth label="Password" value={user.password} name='password' autoComplete='password' onChange={handleChange}/>}
-          {isOperator?<TextField type="password" fullWidth label="Confirm Password" value={futsal.confirm_password} name='confirm_password' autoComplete='confirmPassword' onChange={handleChange}/>:<TextField type="password" fullWidth label="Confirm Password" value={user.confirm_password} name='confirm_password' autoComplete='confirmPassword' onChange={handleChange}/>}
+          {isOperator ? <TextField fullWidth label="Email" value={futsal.email} name='email' autoComplete='email' onChange={handleChange} /> :
+            <TextField fullWidth label="Email" value={user.email} name='email' autoComplete='email' onChange={handleChange} />}
+          {isOperator ? <TextField fullWidth label="Phone Number" value={futsal.phone} name='phone' autoComplete='phone' onChange={handleChange} /> :
+            <TextField fullWidth label="Phone Number" value={user.phone} name='phone' autoComplete='phone' onChange={handleChange} />}
+          {isOperator ? <TextField fullWidth label="Username" value={futsal.username} name='username' autoComplete='username' onChange={handleChange} /> :
+            <TextField fullWidth label="Username" value={user.username} name='username' autoComplete='username' onChange={handleChange} />}
+          {isOperator ? <TextField type="password" fullWidth label="Password" value={futsal.password} name='password' autoComplete='password' onChange={handleChange} /> :
+            <TextField type="password" fullWidth label="Password" value={user.password} name='password' autoComplete='password' onChange={handleChange} />}
+          {isOperator?<TextField type="password" fullWidth label="Confirm Password" value={futsal.confirm_password} name='confirm_password' autoComplete='confirmPassword' onChange={handleChange}/>:
+          <TextField type="password" fullWidth label="Confirm Password" value={user.confirm_password} name='confirm_password' autoComplete='confirmPassword' onChange={handleChange}/>}
+          
           <FormControlLabel
             control={<Checkbox name="checkedA" />}
             label="I accept the terms and conditions."
@@ -157,14 +164,12 @@ const Signup = () => {
             Sign up
           </Button>
 
-
-
         </form>
 
-
-         {/*registration notifications*/}
+         
+        {/*registration notifications*/}
          <Dialog
-                open={userState.loading}
+                open={loading}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
               >
@@ -175,31 +180,29 @@ const Signup = () => {
                 </DialogContent>
               </Dialog>
               <Dialog
-                open={userState.failed}
+                open={!loading && error && open}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
+                onClose={handleClose}
               >
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
-                    {userState.errormsg}
-          </DialogContentText>
-                  <Button onClick={() => dispatch(loadingScreen(false))}>
-                    <CancelIcon />
-                  </Button>
+                    {error}
+                </DialogContentText>
                 </DialogContent>
               </Dialog>
               <Dialog
-                open={userState.success}
+                open={!loading && userInfo && open}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
+                onClose={handleClose}
               >
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
                     Registration Successful
           </DialogContentText>
-                  <Button link href="/login">
+                  <Button component={Link} to="/login">
                     Proceed To Login
-
           </Button>
                 </DialogContent>
               </Dialog>
