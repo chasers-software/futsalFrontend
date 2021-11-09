@@ -2,11 +2,9 @@ import {createStore,combineReducers, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import { userRegisterReducer, userLoginReducer } from './reducers/userReducers'
-import { futsalRegisterReducer } from './reducers/futsalReducers'
 
 const reducers = combineReducers({
     userRegister: userRegisterReducer,
-    futsalRegister: futsalRegisterReducer,
     userLogin: userLoginReducer
 })
 

@@ -12,18 +12,20 @@ export const userRegisterReducer = (state = {}, action) => {
     switch (action.type) {
         case USER_REGISTER_REQUEST:
             return {
-                userLoading: true
+                loading: true
             }
         case USER_REGISTER_SUCCESS:
             return {
-                userLoading: false,
+                loading: false,
                 userInfo: action.payload,
             }
         case USER_REGISTER_FAIL:
             return {
-                userLoading: false,
-                userError: action.payload
+                loading: false,
+                error: action.payload
             }
+        case USER_LOGOUT:
+            return {}
         default:
             return state
     }

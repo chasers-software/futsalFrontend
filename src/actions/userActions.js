@@ -17,17 +17,47 @@ export const registerUser = (formData) => async (dispatch) => {
         })
         //for check
         console.log('action dispatched')
+        const config = {
+            headers: {
+                'Content-type':'application/json'
+            }
+        }
+        let result
+        if (formData.role === 'player') {
+            result = await axios.post('/auth/registeruser', formData, config)
+            
+        }
+        else if (formData.role === 'operator') {
+            const operator = {
+                name: formData.operator_name,
+                email: formData.email,
+                phone: formData.phone,
+                username: formData.username,
+                password: formData.password,
+                role: formData.role
+            }
+            const futsal = {
+                futsalName: formData.name,
+                location: formData.location
+            }
+            console.log('action dispatched')
+            console.log(operator, futsal)
 
-        const { data } = await axios.post('/auth/registeruser', formData)
+            result = await axios.post('/auth/registerfutsal', {operator, futsal})
+        }
 
-        console.log(data)
 
         dispatch({
             type: USER_REGISTER_SUCCESS,
-            payload: data
+            payload: result.data
         })
 
-        localStorage.setItem('userInfo', JSON.stringify(data))
+        dispatch({
+            type: USER_LOGIN_SUCCESS,
+            payload: result.data
+        })
+
+        localStorage.setItem('userInfo', JSON.stringify(result.data))
     }
     catch(error)
     {

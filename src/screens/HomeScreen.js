@@ -45,7 +45,7 @@ const Body = () => {
                                 <Button variant="filled" style={{padding:'20px', backgroundColor:'primary'}}>Go</Button>
                         
                         </Grid>
-                        <Button component={Link} to='/matches' variant='contained'>See all matches</Button>
+                        <Button component={Link} to='/matches' variant='contained' style={{margin:'80px auto'}}>See all matches</Button>
                 </Grid>
                 </Container>
                 </section>

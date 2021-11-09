@@ -27,7 +27,6 @@ const Header = () => {
 //user information received from state
   const userLogin = useSelector(state => state.userLogin)
   const { userInfo } = userLogin
-  console.log(userInfo)
 
 //logout handler
   const handleLogout = () => {
@@ -41,7 +40,7 @@ const Header = () => {
         <AppBar position="fixed" style={{ backgroundColor: "#123524" }}>
           <Toolbar>
             <img src={logo} height="inherit" alt="logo" />
-            <Typography variant="h6" component={Link} to='/' sx={{ flexGrow: 1 }} style={{color:'white'}}>
+            <Typography variant="h6" component={Link} to='/' sx={{ flexGrow: 1 }} style={{color:'white', textDecoration:'none'}}>
               Futsal Nepal
             </Typography>
             {userInfo ? 
