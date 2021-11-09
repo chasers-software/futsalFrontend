@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Grid,
@@ -14,14 +14,15 @@ import {
 } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import CancelIcon from '@material-ui/icons/Cancel'
 import './login.css'
-
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 //actions
 import {useDispatch,useSelector} from 'react-redux'
-import {registerUser} from '../actions/userActions'
+import { registerUser } from '../actions/userActions'
+import { registerFutsal } from "../actions/futsalActions";
 
-const Signup = () => {
+const Signup = ({history}) => {
   //initialize dispatch
   const dispatch=useDispatch()
   const [isOperator, setIsOperator] = useState(false);
@@ -34,9 +35,6 @@ const Signup = () => {
     password:'',
     confirm_password:'',
     role:'player'
-
-
-
   })
   const [futsal,setFutsal]=useState({
     name:'',
@@ -50,28 +48,22 @@ const Signup = () => {
     role:'operator'
 
   })
-  //for mui dialog
-  const [open, setOpen] = useState(true)
-
-  const handleOpen = () => {
-    setOpen(true)
-  }
-  const handleClose = () => {
-    setOpen(false)
-  }
-
   const [acceptTerms,isAcceptTerms]=useState(false)
-  const {loading, userInfo, error} = useSelector((state) => state.userRegister)
+  const { userLoading, userInfo, usertoken, userError } = useSelector((state) => state.userRegister)
+  const { futsalLoading, operatorInfo, futsalInfo, futsaltoken, futsalError } = useSelector((state) => state.futsalRegister)
 
-  const paperStyle = { padding: "30px 20px", width: 300, margin: "20px auto" };
-  const headerStyle = { margin: 0 };
-  const avatarStyle = { backgroundColor: "#1bbd7e" };
-  const btnstyle = { margin: "10px 0", backgroundColor: "#1bbd7e" };
+  useEffect(() => {    
+    if (userInfo || futsalInfo) 
+    {
+      history.push('/login')
+    }
+  }, [history, userInfo, futsalInfo])
 
+  
   const switchSignupType = () => {
     setIsOperator(!isOperator);
   };
-
+  
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -82,7 +74,6 @@ const Signup = () => {
   const handleSubmit=(e)=>
   {
     e.preventDefault();
-    handleOpen()
     
     if(acceptTerms)
     {
@@ -90,27 +81,51 @@ const Signup = () => {
       {
         //for check
         console.log(user)
-        dispatch(registerUser(user))
+        if (user.password.length < 6) {
+          alert('password length cannot be less than 6')
+        }
+        else {
+          if (user.password === user.confirm_password) {
+            dispatch(registerUser(user))
+          }
+          else {
+            alert("passwords do not match")
+          }
+        }  
       }
       else
       {
         //for check
         console.log(futsal)
-
-        dispatch(registerUser(futsal))
-
+        if (futsal.password.length < 6) {
+          alert('password length cannot be less than 6')
+        }
+        else {
+          if (futsal.password === futsal.confirm_password) {
+            dispatch(registerFutsal(futsal))
+          }
+          else {
+            alert("passwords do not match")
+          }
+        }
       }
-
     }
     
     else
     {
       console.log('Please accept Terms and Conditions to signup')
     }
-
+    
+ 
   }
-
+  const paperStyle = { padding: "30px 20px", width: 300, margin: "20px auto" };
+  const headerStyle = { margin: 0 };
+  const avatarStyle = { backgroundColor: "#1bbd7e" };
+  const btnstyle = { margin: "10px 0", backgroundColor: "#1bbd7e" };
+  
   return (
+    <>
+    <Header />
     <Grid className='signUpPage'>
       <Paper elevation={20} style={paperStyle}>
         <Grid align="center">
@@ -137,8 +152,8 @@ const Signup = () => {
           {isOperator && <TextField fullWidth label="Location" value={futsal.location} name='location' autoComplete='location' onChange={handleChange}/>}
           {isOperator && <TextField fullWidth label="Operator Name" value={futsal.operator_name} name='operator_name' autoComplete='operator_name' onChange={handleChange}/>}
           {!isOperator && <TextField fullWidth label="Name" value={user.name} name='name' autoComplete='name' onChange={handleChange}/>}
-          {isOperator ? <TextField fullWidth label="Email" value={futsal.email} name='email' autoComplete='email' onChange={handleChange} /> :
-            <TextField fullWidth label="Email" value={user.email} name='email' autoComplete='email' onChange={handleChange} />}
+          {isOperator ? <TextField fullWidth label="Email" type="email" value={futsal.email} name='email' autoComplete='email' onChange={handleChange} /> :
+            <TextField fullWidth label="Email" value={user.email} type="email" name='email' autoComplete='email' onChange={handleChange} />}
           {isOperator ? <TextField fullWidth label="Phone Number" value={futsal.phone} name='phone' autoComplete='phone' onChange={handleChange} /> :
             <TextField fullWidth label="Phone Number" value={user.phone} name='phone' autoComplete='phone' onChange={handleChange} />}
           {isOperator ? <TextField fullWidth label="Username" value={futsal.username} name='username' autoComplete='username' onChange={handleChange} /> :
@@ -155,7 +170,7 @@ const Signup = () => {
             checked={acceptTerms}
           />
           <Button
-            type="submit"
+              type="submit"
             variant="contained"
             color="primary"
             style={btnstyle}
@@ -165,50 +180,11 @@ const Signup = () => {
           </Button>
 
         </form>
-
-         
-        {/*registration notifications*/}
-         <Dialog
-                open={loading}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    Registering ...
-          </DialogContentText>
-                </DialogContent>
-              </Dialog>
-              <Dialog
-                open={!loading && error && open}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                onClose={handleClose}
-              >
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    {error}
-                </DialogContentText>
-                </DialogContent>
-              </Dialog>
-              <Dialog
-                open={!loading && userInfo && open}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                onClose={handleClose}
-              >
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    Registration Successful
-          </DialogContentText>
-                  <Button component={Link} to="/login">
-                    Proceed To Login
-          </Button>
-                </DialogContent>
-              </Dialog>
-
+        
       </Paper>
-    </Grid>
+      </Grid>
+      <Footer/>
+    </>
   );
 };
 

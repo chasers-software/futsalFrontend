@@ -21,12 +21,8 @@ const ReactRouterSetup = () => {
           <Body />
           <Footer />
         </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/signup">
-          <Signup />
-        </Route>
+        <Route path="/login" component={Login}/>
+        <Route path="/signup" component={Signup} />
         <Route path="/matches" component={MatchesScreen}/>
       </Switch>
     </Router>
