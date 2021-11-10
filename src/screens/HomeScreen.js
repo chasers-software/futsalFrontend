@@ -1,7 +1,8 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom'
 import { Typography, InputAdornment,TextField,Button, Container, Grid } from "@mui/material";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import "./Body.css";
+import "./HomeScreen.css";
 import futsalData from "../dummyFutsalData"
 import FutsalCard from '../components/FutsalCard';
 
@@ -43,7 +44,8 @@ const Body = () => {
                                 variant="filled" style={{color:'white'}} />
                                 <Button variant="filled" style={{padding:'20px', backgroundColor:'primary'}}>Go</Button>
                         
-                    </Grid>
+                        </Grid>
+                        <Button component={Link} to='/matches' variant='contained' style={{margin:'80px auto'}}>See all matches</Button>
                 </Grid>
                 </Container>
                 </section>

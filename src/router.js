@@ -3,12 +3,13 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // pages
 
-import Header from "./Header";
-import Body from "./Body";
-import Footer from "./Footer";
+import Header from "./components/Header";
+import Body from "./screens/HomeScreen";
+import Footer from "./components/Footer";
 import { CssBaseline } from "@mui/material";
-import Login from "./login";
-import Signup from "./signup";
+import Login from "./screens/login";
+import Signup from "./screens/signup";
+import MatchesScreen from "./screens/MatchesScreen";
 
 const ReactRouterSetup = () => {
   return (
@@ -20,12 +21,9 @@ const ReactRouterSetup = () => {
           <Body />
           <Footer />
         </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/signup">
-          <Signup />
-        </Route>
+        <Route path="/login" component={Login}/>
+        <Route path="/signup" component={Signup} />
+        <Route path="/matches" component={MatchesScreen}/>
       </Switch>
     </Router>
   );
