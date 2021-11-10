@@ -1,37 +1,50 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, CircularProgress} from "@mui/material";
+
+import Notification from "../components/Notification";
 
 import MatchCard from "../components/MatchCard";
 
+
 import "./matchScreen.css";
+//actions
+import { listMatches } from "../actions/matchesActions";
+
 
 const MatchesScreen = () => {
-  const [matchData, setMatchData] = useState([]);
+ 
+  const dispatch = useDispatch()
 
-  const getMatchData = async () => {
-    const result = await axios.get("/matches");
-    const matches = await result.data.matches;
-    setMatchData(matches);
-  };
+  const { loading, matches, error } = useSelector((state) => state.matches)
 
   useEffect(() => {
-    getMatchData();
-  }, []);
+    dispatch(listMatches())
+  }, [dispatch]);
 
   return (
     <>
-      <Header />
-      <Grid className="matchesPage">
+      {loading ? <CircularProgress sx={{ margin: 'auto', position: 'absolute', top: '48%', left: '48%' }} /> :
+        error ? <>
+          <Header />
+          <Notification severity='error' message={error} />
+          <div style={{height:'100vh'}}>x </div>
+          </>
+          :
+        <>
+        <Header />
+        <Grid className="matchesPage">
         <Container>
           <Grid container spacing={4}>
-            <MatchCard data={matchData} />
+            <MatchCard data={matches} />
           </Grid>
         </Container>
-      </Grid>
-      <Footer />
+        </Grid>
+          <Footer />
+          </>
+      }
     </>
   );
 };
