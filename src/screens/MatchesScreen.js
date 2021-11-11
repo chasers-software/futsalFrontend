@@ -49,7 +49,7 @@ const MatchesScreen = () => {
 
   useEffect(() => {
     dispatch(listMatches({}));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
