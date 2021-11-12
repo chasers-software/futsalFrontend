@@ -6,19 +6,16 @@ import {
   CardContent,
   Typography,
   CardActions,
-  Button,
 } from "@mui/material";
+
+import BookDialogButton from "./BookDialogButton";
 
 const MatchCard = ({ data }) => {
   const getBookButton = (match) => {
-    let button = (
-      <Button color="info" size="small">
-        Book Now
-      </Button>
-    );
+    let button = <BookDialogButton match={match} />;
     if (match.status === "booked") {
       button = (
-        <Typography variant="button" color="red">
+        <Typography gutterBottom variant="button" color="red">
           Booked
         </Typography>
       );
