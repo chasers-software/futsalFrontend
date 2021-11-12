@@ -10,20 +10,20 @@ import {
 } from "@mui/material";
 
 const MatchCard = ({ data }) => {
-  const getButtonColor = (match) => {
-    let color = "info";
+  const getBookButton = (match) => {
+    let button = (
+      <Button color="info" size="small">
+        Book Now
+      </Button>
+    );
     if (match.status === "booked") {
-      color = "error";
+      button = (
+        <Typography variant="button" color="red">
+          Booked
+        </Typography>
+      );
     }
-    return color;
-  };
-
-  const getButtonText = (match) => {
-    let text = "Book Now";
-    if (match.status === "booked") {
-      text = "Booked";
-    }
-    return text;
+    return button;
   };
 
   return (
@@ -45,11 +45,7 @@ const MatchCard = ({ data }) => {
                 Price : {d.price}
               </Typography>
             </CardContent>
-            <CardActions>
-              <Button color={getButtonColor(d)} size="small">
-                {getButtonText(d)}
-              </Button>
-            </CardActions>
+            <CardActions>{getBookButton(d)}</CardActions>
           </Card>
         </Grid>
       ))}

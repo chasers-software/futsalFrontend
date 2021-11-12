@@ -76,14 +76,22 @@ const MatchesScreen = () => {
                 >
                   <option value="">All Futsals</option>
                   {futsals.map((futsal) => {
-                    return <option value={futsal}>{futsal}</option>;
+                    return (
+                      <option key={futsal} value={futsal}>
+                        {futsal}
+                      </option>
+                    );
                   })}
                 </select>
 
                 <select name="date" value={filter.date} onChange={handleChange}>
                   <option value="">All Dates</option>
                   {dates.map((date) => {
-                    return <option value={date}>{date}</option>;
+                    return (
+                      <option key={date} value={date}>
+                        {date}
+                      </option>
+                    );
                   })}
                 </select>
 
@@ -94,7 +102,11 @@ const MatchesScreen = () => {
                 >
                   <option value="">All Start Time</option>
                   {startTimes.map((startTime) => {
-                    return <option value={startTime}>{startTime}</option>;
+                    return (
+                      <option key={startTime} value={startTime}>
+                        {startTime}
+                      </option>
+                    );
                   })}
                 </select>
 
@@ -105,7 +117,11 @@ const MatchesScreen = () => {
                 >
                   <option value="">All End Time</option>
                   {endTimes.map((endTime) => {
-                    return <option value={endTime}>{endTime}</option>;
+                    return (
+                      <option key={endTime} value={endTime}>
+                        {endTime}
+                      </option>
+                    );
                   })}
                 </select>
 
@@ -116,7 +132,11 @@ const MatchesScreen = () => {
                 >
                   <option value="">All Prices</option>
                   {prices.map((price) => {
-                    return <option value={price}>{price}</option>;
+                    return (
+                      <option key={price} value={price}>
+                        {price}
+                      </option>
+                    );
                   })}
                 </select>
 
@@ -127,7 +147,11 @@ const MatchesScreen = () => {
                 >
                   <option value="">All Status</option>
                   {statuses.map((status) => {
-                    return <option value={status}>{status}</option>;
+                    return (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    );
                   })}
                 </select>
 
