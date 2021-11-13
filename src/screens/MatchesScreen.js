@@ -61,7 +61,6 @@ const MatchesScreen = () => {
         <>
           <Header />
           <Notification severity="error" message={error} />
-          <div style={{ height: "100vh" }}>x </div>
         </>
       ) : (
         <>
