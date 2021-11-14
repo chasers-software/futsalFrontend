@@ -10,6 +10,7 @@ import { CssBaseline } from "@mui/material";
 import Login from "./screens/login";
 import Signup from "./screens/signup";
 import MatchesScreen from "./screens/MatchesScreen";
+import Profile from "./screens/Profile";
 
 const ReactRouterSetup = () => {
   return (
@@ -21,9 +22,10 @@ const ReactRouterSetup = () => {
           <Body />
           <Footer />
         </Route>
-        <Route path="/login" component={Login}/>
+        <Route path="/login" component={Login}/>s
         <Route path="/signup" component={Signup} />
         <Route path="/matches" component={MatchesScreen}/>
+        <Route path="/profile" component={Profile}/>
       </Switch>
     </Router>
   );

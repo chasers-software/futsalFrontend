@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
-import { Typography, Button, Box, Toolbar, Menu, MenuItem } from "@mui/material";
+import { Typography, Button, Box, Toolbar, Menu} from "@mui/material";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import logo from "../images/Capture.PNG";
 // import MenuIcon from '@mui/icons-material/Menu';
@@ -64,9 +64,9 @@ const Header = () => {
                     'aria-labelledby': 'basic-button',
                   }}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  <Button href="/" fullWidth color="inherit">Dashboard</Button>
+                  <Button href="/profile" fullWidth color="inherit">My Profile</Button>
+                  <Button href="/" fullWidth color="inherit" onClick={handleLogout}>Logout</Button>
                 </Menu>
               </>
               :

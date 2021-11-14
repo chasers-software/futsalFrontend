@@ -6,7 +6,10 @@ import {
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGIN_FAIL,
-    USER_LOGOUT
+    USER_LOGOUT,
+    USER_DETAIL_REQUEST,
+    USER_DETAIL_SUCCESS,
+    USER_DETAIL_FAIL
 } from '../constants/userConstants.js'
 
 export const registerUser = (formData) => async (dispatch) => {
@@ -102,4 +105,80 @@ export const logout = () => (dispatch) => {
     dispatch({
         type: USER_LOGOUT
     })
+}
+
+export const userProfile=(userData)=>async(dispatch)=>{
+    try{
+        dispatch({type:USER_DETAIL_REQUEST})
+
+        if(userData)
+        {
+
+        if(userData.user.role==='player')
+        {
+            //for checking
+            console.log('Request for userdetail')
+
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization':`Bearer ${userData.token}`
+                }
+            }
+
+            const {data}=await axios.get(`/users/profile/${userData.user.userId}`,config)
+
+            //for checking
+            console.log('response received',data)
+
+            dispatch(
+                {
+                    type:USER_DETAIL_SUCCESS,
+                    payload:data
+                }
+            )
+
+
+        }
+
+        else if(userData.user.role==='operator')
+        {
+             //for checking
+             console.log('Request for operator detail')
+
+             const {data}=await axios.get(`/futsal/${userData.futsal.futsalId}`)
+
+             //for checking
+             console.log('response received',data)
+ 
+             dispatch(
+                 {
+                     type:USER_DETAIL_SUCCESS,
+                     payload:data
+                 }
+             )
+ 
+
+        }
+    }
+    else
+    {
+        dispatch(
+            {
+                type:USER_DETAIL_FAIL,
+                payload:'Not Logged In'
+            }
+        )
+    }
+
+    }
+    catch(error)
+    {
+       
+        dispatch({
+            type: USER_DETAIL_FAIL,
+            payload: error.response.data.msg
+        }) 
+
+    }
 }
