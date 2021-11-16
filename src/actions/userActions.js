@@ -9,7 +9,10 @@ import {
     USER_LOGOUT,
     USER_DETAIL_REQUEST,
     USER_DETAIL_SUCCESS,
-    USER_DETAIL_FAIL
+    USER_DETAIL_FAIL,
+    USER_DETAILS_EDIT_REQUEST,
+    USER_DETAILS_EDIT_SUCCESS,
+    USER_DETAILS_EDIT_FAIL
 } from '../constants/userConstants.js'
 
 export const registerUser = (formData) => async (dispatch) => {
@@ -126,15 +129,17 @@ export const userProfile=(userData)=>async(dispatch)=>{
                 }
             }
 
-            const {data}=await axios.get(`/users/profile/${userData.user.userId}`,config)
+            const profileData=await axios.get(`/users/profile/${userData.user.userId}`,config)
+
+            const profile=[profileData.data]
 
             //for checking
-            console.log('response received',data)
+            console.log('response received',profile)
 
             dispatch(
                 {
                     type:USER_DETAIL_SUCCESS,
-                    payload:data
+                    payload:profile
                 }
             )
 
@@ -146,15 +151,37 @@ export const userProfile=(userData)=>async(dispatch)=>{
              //for checking
              console.log('Request for operator detail')
 
-             const {data}=await axios.get(`/futsal/${userData.futsal.futsalId}`)
+             const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization':`Bearer ${userData.token}`
+                }
+            }
+
+            const profileData=await axios.get(`/users/profile/${userData.user.userId}`,config)
+
+            const operator=profileData.data
+
+            //for checking
+            console.log('response received',operator)
+
+             const futsalData=await axios.get(`/futsal/${userData.futsal.futsalId}`)
+
+             const futsal=futsalData.data
 
              //for checking
-             console.log('response received',data)
+             console.log('response received',futsal)
+
+             const editedData=[operator,futsal]
+
+
+             //for checking
+             console.log('final Data',editedData)
  
              dispatch(
                  {
                      type:USER_DETAIL_SUCCESS,
-                     payload:data
+                     payload:editedData
                  }
              )
  
@@ -174,6 +201,7 @@ export const userProfile=(userData)=>async(dispatch)=>{
     }
     catch(error)
     {
+        console.log(error)
        
         dispatch({
             type: USER_DETAIL_FAIL,
@@ -181,4 +209,27 @@ export const userProfile=(userData)=>async(dispatch)=>{
         }) 
 
     }
+}
+
+export const userProfileEdit=(userId,newProfileDetails,token)=>async(dispatch)=>{
+    try{
+
+    dispatch({type:USER_DETAILS_EDIT_REQUEST})
+
+    const config={headers: {
+        'Content-Type': 'application/json',
+        'authorization':`Bearer ${token}`
+    }}
+
+    const data=await axios.patch(`/users/editProfile/${userId}`,newProfileDetails,config)
+
+    dispatch({type:USER_DETAILS_EDIT_SUCCESS})
+}
+catch(error)
+{
+    dispatch({type:USER_DETAILS_EDIT_FAIL,payload:error.response.data.msg})
+}
+
+
+
 }
